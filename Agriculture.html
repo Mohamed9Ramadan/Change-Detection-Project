@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8" />
+        <title>Agriculture</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.0/dist/leaflet.css" />
+        <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-side-by-side/2.0.1/leaflet-side-by-side.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+                crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="Agriculture.css">
+</head>
+
+<body>
+        <div class="tabs">
+                <a href="Index.html" target="_blank"><button class="tablinks">Home</button></a>
+                <a href="Agriculture.html" target="_blank"><button class="tablinks" onclick="">Agriculture</button></a>
+                <a href="Lakes.html" target="_blank"><button class="tablinks" onclick="">Lakes</button></a>
+                <a href="Urban.html" target="_blank"><button class="tablinks" onclick="">Urban</button></a>
+                <a href="https://survey123.arcgis.com/share/4454d122d6e3418d875ef664bb28d090" target="_blank"><button
+                                class="tablinks" onclick="">Send Feedback</button></a>
+                <a href="About Us.html" target="_blank"><button class="tablinks" onclick="">About Us</button></a>
+        </div>
+        <h1 class="first_heading">Agriculture Changes</h1>
+        <h2 class="second_heading">The Nile Delta (2000–2020)</h2>
+        <p class="text">The Nile Delta has undergone significant agricultural changes between 2000 and 2020 due to
+                various
+                environmental, economic, and policy-driven factors.</p>
+        <ol class="list">
+                <li>Urban Expansion & Land Loss
+                        <ul>
+                                <li>Rapid urbanization has led to a reduction in agricultural land, with many fertile
+                                        areas converted into residential and industrial zones.</li>
+                                <li>Satellite imagery shows a steady decline in green cover, particularly around major
+                                        cities like Cairo and Alexandria.</li>
+                        </ul>
+                </li>
+                <li>Soil Salinity & Water Scarcity
+                        <ul>
+                                <li>Rising sea levels and excessive irrigation have increased soil salinity, making it
+                                        harder to cultivate traditional crops.</li>
+                                <li>Reduced water availability from the Nile due to upstream dam projects and climate
+                                        change has affected irrigation patterns.</li>
+                        </ul>
+                </li>
+                <li>Shifts in Crop Patterns
+                        <ul>
+                                <li>Farmers have adapted by shifting from water-intensive crops (like rice) to
+                                        drought-resistant alternatives.</li>
+                                <li>The adoption of modern irrigation techniques, such as drip irrigation, has helped
+                                        improve water efficiency.</li>
+                        </ul>
+                </li>
+                <li>Technological & Policy Interventions
+                        <ul>
+                                <li>Government initiatives promoting sustainable farming and precision agriculture have
+                                        played a key role in mitigating land degradation.</li>
+                                <li>The use of Geographic Information Systems (GIS) and remote sensing has helped
+                                        monitor land-use changes effectively.</li>
+                        </ul>
+                </li>
+        </ol>
+        <p class="text">Overall, the past two decades have seen both challenges and innovations in the Nile Delta's
+                agriculture, with
+                efforts being made to balance food security with environmental sustainability.</p>
+        <div class="controls">
+                <label for="governorateSelect">Governorate:</label>
+                <select id="governorateSelect">
+                        <option value="Port Said">Port Said</option>
+                        <option value="Ismailia">Ismailia</option>
+                        <option value="Sharqia">Sharqia</option>
+                        <option value="Dakahlia">Dakahlia</option>
+                        <option value="Kafr Al Sheikh">Kafr Al Sheikh</option>
+                        <option value="Damietta">Damietta</option>
+                        <option value="Gharbia">Gharbia</option>
+                        <option value="Behira">Behira</option>
+                        <option value="Menofia">Menofia</option>
+                        <option value="Qalubia">Qalubia</option>
+                        <option value="Alexandria">Alexandria</option>
+                </select>
+                <label for="yearSelectLeft">First Year</label>
+                <select id="yearSelectLeft">
+                        <option value="2000">2000</option>
+                        <option value="2010">2010</option>
+                        <option value="2020">2020</option>
+                </select>
+                <label for="yearSelectRight">Second Year</label>
+                <select id="yearSelectRight">
+                        <option value="2000">2000</option>
+                        <option value="2010">2010</option>
+                        <option value="2020">2020</option>
+                </select>
+                <button id="compareButton">Compare</button>
+                <button id="stopButton">Stop</button>
+        </div>
+        <div id="map"></div>
+        <div id="attrModal" class="modal">
+                <div class="modal-content">
+                        <span class="modal-close" id="modalCloseAttr">&times;</span>
+                        <div id="attrContent"></div>
+                </div>
+        </div>
+        <div id="styleModal" class="modal">
+                <div class="modal-content">
+                        <span class="modal-close" id="modalCloseStyle">&times;</span>
+                        <h3>Edit Layer Style</h3>
+                        <form id="styleForm">
+                                <label for="fillInput">Fill Color:</label>
+                                <input type="color" id="fillInput" name="fill" value="#ffddaa">
+                                <input type="checkbox" id="noFill" name="noFill"> No Fill<br><br>
+                                <label for="outlineInput">Outline Color:</label>
+                                <input type="color" id="outlineInput" name="outline" value="#ff7800"><br><br>
+                                <label for="weightInput">Weight (stroke width):</label>
+                                <input type="number" id="weightInput" name="weight" value="2" min="1" max="10"><br><br>
+                                <label for="fillopacityInput">Fill Opacity</label>
+                                <input type="number" id="fillopacityInput" name="fill opacity" step="0.1" value="0.5"
+                                        min="0" max="1"><br><br>
+                                <label for="opacityInput">Outline Opacity:</label>
+                                <input type="number" id="opacityInput" name="opacity" step="0.1" value="0.5" min="0"
+                                        max="1"><br><br>
+                                <button type="submit" id="apply">Apply Changes</button>
+                        </form>
+                </div>
+        </div>
+        <div id="toc" class="collapsed">
+                <div class="toc-header">
+                        <button id="toc-toggle" class="toggle">+</button>
+                        <h3>NDVI Layers</h3>
+                </div>
+                <div id="toc-content">
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Alexandria</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Alexandria2020"
+                                                        data-layer="ITI:Alexandria 2020" checked>
+                                                <label for="Alexandria2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Alexandria2010"
+                                                        data-layer="ITI:Alexandria 2010" checked>
+                                                <label for="Alexandria2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Alexandria2000"
+                                                        data-layer="ITI:Alexandria 2000" checked>
+                                                <label for="Alexandria2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Behira</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="layer2020" data-layer="ITI:2020" checked>
+                                                <label for="layer2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="layer2010" data-layer="ITI:2010" checked>
+                                                <label for="layer2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="layer2000" data-layer="ITI:2000" checked>
+                                                <label for="layer2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Dakahlia</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Dakahlia2020" data-layer="ITI:Dakahlia 2020"
+                                                        checked>
+                                                <label for="Dakahlia2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Dakahlia2010" data-layer="ITI:Dakahlia 2010"
+                                                        checked>
+                                                <label for="Dakahlia2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Dakahlia2000" data-layer="ITI:Dakahlia 2000"
+                                                        checked>
+                                                <label for="Dakahlia2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Damietta</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Damietta2020" data-layer="ITI:Damietta 2020"
+                                                        checked>
+                                                <label for="Damietta2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Damietta2010" data-layer="ITI:Damietta 2010"
+                                                        checked>
+                                                <label for="Damietta2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Damietta2000" data-layer="ITI:Damietta 2000"
+                                                        checked>
+                                                <label for="Damietta2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Gharbia</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Gharbia2020" data-layer="ITI:Gharbia 2020"
+                                                        checked>
+                                                <label for="Gharbia2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Gharbia2010" data-layer="ITI:Gharbia 2010"
+                                                        checked>
+                                                <label for="Gharbia2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Gharbia2000" data-layer="ITI:Gharbia 2000"
+                                                        checked>
+                                                <label for="Gharbia2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Ismailia</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Ismailia2020" data-layer="ITI:Ismailia 2020"
+                                                        checked>
+                                                <label for="Ismailia2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Ismailia2010" data-layer="ITI:Ismailia 2010"
+                                                        checked>
+                                                <label for="Ismailia2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Ismaili2000" data-layer="ITI:Ismailia 2000"
+                                                        checked>
+                                                <label for="Ismailia2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Kafr Al Sheikh</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Kafr Al Sheikh2020"
+                                                        data-layer="ITI:Kafr Alsheikh 2020" checked>
+                                                <label for="Kafr Al Sheikh2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Kafr Al Sheikh2010"
+                                                        data-layer="ITI:Kafr Alsheikh 2010" checked>
+                                                <label for="Kafr Al Sheikh2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Kafr Al Sheikh2000"
+                                                        data-layer="ITI:Kafr Alsheikh 2000" checked>
+                                                <label for="Kafr Al Sheikh2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Menofia</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Menofia2020" data-layer="ITI:Menofia 2020"
+                                                        checked>
+                                                <label for="Menofia2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Menofia2010" data-layer="ITI:Menofia 2010"
+                                                        checked>
+                                                <label for="Menofia2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Menofia2000" data-layer="ITI:Menofia 2000"
+                                                        checked>
+                                                <label for="Menofia2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Port Said</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Port Said2020"
+                                                        data-layer="ITI:Port Said 2020" checked>
+                                                <label for="Port Said2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Port Said2010"
+                                                        data-layer="ITI:Port Said 2010" checked>
+                                                <label for="Port Said2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Port Said2000"
+                                                        data-layer="ITI:Port Said 2000" checked>
+                                                <label for="Port Said2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Qalubia</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Qalubia2020" data-layer="ITI:Qalubia 2020"
+                                                        checked>
+                                                <label for="Qalubia2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Qalubia2010" data-layer="ITI:Qalubia 2010"
+                                                        checked>
+                                                <label for="Qalubia2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Qalubia2000" data-layer="ITI:Qalubia 2000"
+                                                        checked>
+                                                <label for="Qalubia2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="governorate">
+                                <div class="gov-header collapsed">
+                                        <span>Sharqia</span>
+                                        <button class="gov-toggle">+</button>
+                                </div>
+                                <div class="years">
+                                        <div>
+                                                <input type="checkbox" id="Shaqia2020" data-layer="ITI:Shaqia 2020"
+                                                        checked>
+                                                <label for="Shaqia2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Shaqia2010" data-layer="ITI:Shaqia 2010"
+                                                        checked>
+                                                <label for="Port Said2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Shaqia2000" data-layer="ITI:Shaqia 2000"
+                                                        checked>
+                                                <label for="Shaqia2000">2000</label>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+
+        </div>
+        <br>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDVI 2000 (Sqkm)</th>
+                        <th>NDVI 2010 (Sqkm)</th>
+                        <th>NDVI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Al Bahaira</td>
+                        <td>3249.980</td>
+                        <td>4028.536</td>
+                        <td>5220.910</td>
+                </tr>
+                <tr>
+                        <td>Al Dakahlia</td>
+                        <td>2500.133</td>
+                        <td>2327.959</td>
+                        <td>2590.818</td>
+                </tr>
+                <tr>
+                        <td>Al Gharbia</td>
+                        <td>1519.503</td>
+                        <td>1518.450</td>
+                        <td>1614.212</td>
+                </tr>
+                <tr>
+                        <td>Al Menofia</td>
+                        <td>1027.512</td>
+                        <td>1007.609</td>
+                        <td>1461.422</td>
+                </tr>
+                <tr>
+                        <td>Al Qalubia</td>
+                        <td>428.110</td>
+                        <td>535.823</td>
+                        <td>627.802</td>
+                </tr>
+                <tr>
+                        <td>Al Sharqia</td>
+                        <td>2316.186</td>
+                        <td>1768.463</td>
+                        <td>2719.745</td>
+                </tr>
+                <tr>
+                        <td>Alexandria</td>
+                        <td>364.945</td>
+                        <td>263.016</td>
+                        <td>630.067</td>
+                </tr>
+                <tr>
+                        <td>Ismailia</td>
+                        <td>165.620</td>
+                        <td>275.979</td>
+                        <td>594.627</td>
+                </tr>
+                <tr>
+                        <td>Damietta</td>
+                        <td>396.652</td>
+                        <td>355.234</td>
+                        <td>405.542</td>
+                </tr>
+                <tr>
+                        <td>Kafr Al Sheikh</td>
+                        <td>1809.275</td>
+                        <td>1799.778</td>
+                        <td>2120.828</td>
+                </tr>
+                <tr>
+                        <td>Port Said</td>
+                        <td>7.247</td>
+                        <td>65.064</td>
+                        <td>188.324</td>
+                </tr>
+        </table>
+        <div align="center" id="div-story">
+                <p>Click this button to explore the StoryMap showcasing how agriculture has shaped the Nile Delta from
+                        2000 to
+                        2020. It presents data for each governorate separately using GIS technology, and also dives into
+                        how
+                        farming patterns have changed and impacted local communities.</p>
+                <a href="https://arcg.is/00eyLO" target="_blank"><button id="story">Click here</button></a>
+        </div>
+        <br>
+        <iframe src="https://www.arcgis.com/apps/dashboards/7174910c05d743c7a1ad96822a818f19" allowfullscreen></iframe>
+        <h2 class="second_heading">Agricultural Reclamation in Egypt (2000–2020): Expansion and Challenges</h2>
+        <p class="text">Between 2000 and 2020, Egypt made significant efforts in agricultural reclamation to expand
+                arable land and
+                enhance food security. The government launched several mega projects, such as the Toshka Project, the
+                East Owainat Project, and the 1.5 Million Feddan Project. These initiatives aimed to reclaim desert
+                areas, improve irrigation systems, and introduce modern agricultural techniques.
+                The 1.5 Million Feddan Project, launched in 2015, was one of the most ambitious efforts, focusing on
+                groundwater irrigation and sustainable farming. Additionally, the use of advanced irrigation
+                technologies, such as drip and sprinkler systems, helped optimize water consumption.
+                Challenges during this period included water scarcity, high costs, and soil salinity, but government
+                support, private investments, and technological advancements played a crucial role in expanding Egypt’s
+                agricultural land and increasing crop production.</p>
+        <h3 class="third_heading">1-East Owainat</h3>
+        <p class="text">East Owainat is one of Egypt’s most significant agricultural reclamation projects, located in
+                the Western
+                Desert. The project focuses on transforming desert land into fertile farmland using groundwater
+                irrigation. Large-scale investments have been made in wheat, barley, corn, and fruit cultivation. The
+                area benefits from modern irrigation systems and mechanized farming techniques, attracting both local
+                and foreign investors. Despite challenges like water resource management and high transportation costs,
+                East Owainat remains a key contributor to Egypt’s food security strategy.</p>
+        <h3 class="third_heading">2-Toshka Spillway</h3>
+        <p class="text">The Toshka Project, launched in the late 1990s and revitalized in the 2010s, aims to create a
+                new
+                agricultural and industrial hub in the South of Egypt. The project diverts water from Lake Nasser
+                through the Sheikh Zayed Canal to irrigate reclaimed desert land. It has supported cultivation of wheat,
+                corn, and fruits, and has attracted major agricultural companies. However, the project has faced
+                technical and financial obstacles, including high water demand and soil salinity issues. In recent
+                years, the government has accelerated efforts to expand Toshka’s agricultural output as part of Egypt’s
+                food security initiatives.</p>
+        <div class="controls">
+                <label for="governorateSelect2">Governorate:</label>
+                <select id="governorateSelect2">
+                        <option value="Owainat">Owainat</option>
+                        <option value="Toshka">Toshka</option>
+                </select>
+
+                <label for="yearSelectLeft2">First Year</label>
+                <select id="yearSelectLeft2"></select>
+
+                <label for="yearSelectRight2">Second Year</label>
+                <select id="yearSelectRight2"></select>
+
+                <button id="compareButton2">Compare</button>
+                <button id="stopButton2">Stop</button>
+        </div>
+
+        <div id="map2"></div>
+        <div id="toc2" class="collapsed2">
+                <div class="toc-header2">
+                        <button id="toc-toggle2" class="toggle2">+</button>
+                        <h3>NDVI Layers</h3>
+                </div>
+                <div id="toc-content2">
+                        <div class="governorate2">
+                                <div class="gov-header2 collapsed2">
+                                        <span>Wadi Gedeed</span>
+                                        <button class="gov-toggle2">+</button>
+                                </div>
+                                <div class="years2">
+                                        <h4>Owainat</h4>
+                                        <div>
+                                                <input type="checkbox" id="Wadi Gedeed2024"
+                                                        data-layer="ITI:Wadi Gedeed 2024" checked>
+                                                <label for="Wadi Gedeed2024">2024</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Wadi Gedeed2020"
+                                                        data-layer="ITI:Wadi Gedeed 2020" checked>
+                                                <label for="Wadi Gedeed2020">2020</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Wadi Gedeed2010"
+                                                        data-layer="ITI:Wadi Gedeed 2010" checked>
+                                                <label for="Wadi Gedeed2010">2010</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Wadi Gedeed2000"
+                                                        data-layer="ITI:Wadi Gedeed 2000" checked>
+                                                <label for="Wadi Gedeed2000">2000</label>
+                                        </div>
+                                        <h4>Toshka</h4>
+                                        <div>
+                                                <input type="checkbox" id="Wadi Gedeed22024"
+                                                        data-layer="ITI:Wadi Gedeed 2 2024" checked>
+                                                <label for="Wadi Gedeed22024">2024</label>
+                                        </div>
+                                        <div>
+                                                <input type="checkbox" id="Wadi Gedeed22020"
+                                                        data-layer="ITI:Wadi Gedeed 2 2020" checked>
+                                                <label for="Wadi Gedeed22020">2020</label>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <br>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Areas</th>
+                        <th>NDVI 2000 (Sqkm)</th>
+                        <th>NDVI 2010 (Sqkm)</th>
+                        <th>NDVI 2020 (Sqkm)</th>
+                        <th>NDVI 2024 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>East Owainat</td>
+                        <td>3.551</td>
+                        <td>189.839</td>
+                        <td>385.630</td>
+                        <td>413.150</td>
+                </tr>
+                <tr>
+                        <td>Toshka Spillway</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>210.225</td>
+                        <td>991.664</td>
+                </tr>
+        </table>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet@1.9.0/dist/leaflet.js"></script>
+        <script src="Lib/leaflet-side-by-side.min.js"></script>
+        <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
+        <script src="https://unpkg.com/esri-leaflet-vector/dist/esri-leaflet-vector.js"></script>
+        <script src="Agriculture.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,472 @@
+* {
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+}
+
+body {
+        background: url('images/Agriculture\ Background.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+        line-height: 1.8;
+        padding: 20px 80px;
+        font-size: 18px;
+        text-align: justify;
+}
+
+.tabs {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-bottom: 25px;
+}
+
+.tabs a {
+        text-decoration: none;
+}
+
+.tablinks {
+        background-color: #6e7a726b;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: bold;
+}
+
+.tablinks:hover {
+        background-color: rgb(13, 182, 1);
+        box-shadow: 0 4px 8px rgb(13, 182, 1);
+}
+
+.first_heading {
+        text-align: center;
+        color: #1de15b;
+        margin-bottom: 15px;
+        font-size: 50px;
+        font-weight: 800;
+        font-family: 'Merriweather', serif;
+}
+
+.second_heading {
+        text-align: center;
+        color: white;
+        margin-bottom: 15px;
+        font-size: 30px;
+        font-weight: 700;
+}
+
+.third_heading {
+        text-align: center;
+        color: white;
+        margin-bottom: 15px;
+        font-size: 25px;
+        font-weight: 700;
+}
+
+ul,
+ol {
+        padding-left: 40px;
+}
+
+.list::marker {
+        color: white;
+        font-weight: bold;
+}
+
+.list {
+        color: white;
+        font-weight: normal;
+}
+
+table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        font-size: 18px;
+}
+
+th,
+td {
+        padding: 14px;
+        border: 1px solid #ddd;
+        text-align: center;
+}
+
+td {
+        color: black;
+}
+
+th {
+        background-color: #0a6b28;
+        color: white;
+        font-weight: bold;
+}
+
+tr:nth-child(even) {
+        background-color: #f2f2f2;
+}
+
+#map,
+#map2 {
+        width: 95%;
+        height: 550px;
+        margin: 20px auto;
+        border: 3px solid #0a6b28;
+        border-radius: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.leaflet-control-home {
+        background-image: url('images/home.png');
+        background-size: cover;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+}
+
+.leaflet-control.layers-control {
+        background: white;
+        padding: 8px;
+        max-height: 240px;
+        overflow-y: auto;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+        font-family: sans-serif;
+}
+
+.layers-control table {
+        width: 100%;
+        border-collapse: collapse;
+}
+
+.layers-control th,
+.layers-control td {
+        border: 1px solid #ccc;
+        padding: 4px;
+        text-align: center;
+        font-size: 12px;
+}
+
+.layers-control th {
+        background: #f0f0f0;
+        color: black;
+}
+
+.layers-control button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+}
+
+.modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+}
+
+.modal-close {
+        color: #aaa;
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+        color: black;
+}
+
+table.attr-table {
+        width: 100%;
+        border-collapse: collapse;
+}
+
+table.attr-table th,
+table.attr-table td {
+        border: 1px solid #ddd;
+        padding: 5px;
+        font-size: 12px;
+}
+
+table.attr-table th {
+        background: #f9f9f9;
+}
+
+#toc {
+        position: absolute;
+        top: 1115px;
+        right: 125px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: sans-serif;
+        z-index: 1000;
+        width: 190px;
+        max-height: 260px;
+        overflow-y: auto;
+        transition: all 0.3s ease;
+        color: black;
+}
+
+#toc2 {
+        position: absolute;
+        top: 4330px;
+        right: 125px;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: sans-serif;
+        z-index: 1000;
+        width: 180px;
+        max-height: 200px;
+        overflow-y: auto;
+        transition: all 0.3s ease;
+        color: black;
+}
+
+#toc>.toc-header,
+#toc2>.toc-header2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+}
+
+#toc>.toc-header h3,
+#toc2>.toc-header2 {
+        margin: 0;
+        font-size: 16px;
+        text-align: center;
+        flex-grow: 1;
+}
+
+#toc button.toggle,
+#toc2 button.toggle {
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+}
+
+#toc-content,
+#toc-content2 {
+        display: block;
+}
+
+#toc.collapsed #toc-content,
+#toc2.collapsed2 #toc-content2 {
+        display: none;
+}
+
+.gov-header,
+.gov-header2 {
+        background: #f3f3f3;
+        padding: 5px;
+        border-radius: 3px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin-top: 8px;
+        font-weight: bold;
+}
+
+.gov-header button.gov-toggle,
+.gov-header2 button.gov-toggle2 {
+        background: none;
+        border: none;
+        font-size: 12px;
+        cursor: pointer;
+}
+
+.years,
+.years2 {
+        display: none;
+        margin-left: 10px;
+        padding: 5px 0;
+}
+
+.years div,
+.years2 div {
+        margin: 4px 0;
+}
+
+.year-label,
+.years2-label {
+        margin-left: 5px;
+        font-size: 12px;
+}
+
+.controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgb(13, 182, 1);
+        max-width: 950px;
+        margin: 30px auto;
+}
+
+.controls label {
+        font-size: 16px;
+        font-weight: 600;
+        color: rgb(61, 64, 61);
+        margin-right: 5px;
+}
+
+.controls select {
+        padding: 8px 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.controls select:focus {
+        border-color: #30bf00;
+        box-shadow: 0 0 5px rgb(13, 182, 1);
+        outline: none;
+}
+
+.controls button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(13, 182, 1);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.controls button:hover {
+        background-color: rgb(12, 125, 4);
+        box-shadow: 0 4px 8px rgb(13, 182, 1);
+}
+
+@media (max-width: 480px) {
+        .controls {
+                flex-direction: column;
+                text-align: center;
+        }
+
+        .controls label,
+        .controls select,
+        .controls button {
+                width: 100%;
+                margin: 5px 0;
+        }
+}
+
+#styleForm {
+        color: black;
+}
+
+#apply {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: rgb(13, 182, 1);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+#apply:hover {
+        background-color: rgb(9, 112, 2);
+}
+
+#story {
+        margin: 12px auto;
+        padding: 14px 24px;
+        font-size: 18px;
+        background-color: rgb(13, 182, 1);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+#story:hover {
+        background-color: rgb(12, 125, 4);
+        box-shadow: 0 4px 8px rgb(13, 182, 1);
+}
+
+.info.legend {
+        background: white;
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+}
+
+.info.legend h4 {
+        margin: 0 0 5px;
+        color: #777;
+}
+
+.info.legend .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+}
+
+.info.legend .legend-item span {
+        margin-left: 8px;
+        color: #000;
+        font-size: 14px;
+        vertical-align: middle;
+        display: inline-block;
+}
+
+iframe {
+        width: 100%;
+        height: 650px;
+        border: 3px solid #0a6b28;
+        border-radius: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#div-story {
+        background-color: #f9aa194c;
+        border: 3px solid #0a6b28;
+        border-radius: 15px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+}

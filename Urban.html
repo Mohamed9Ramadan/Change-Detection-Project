@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Urban</title>
+        <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/dark/main.css">
+        <link rel="stylesheet" href="Urban_Style.css">
+        <style>
+                .controls {
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                        background-color: #ffffff;
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        padding: 20px;
+                        box-shadow: 0 4px 6px rgb(182, 182, 1);
+                        max-width: 950px;
+                        margin: 30px auto;
+                }
+
+                .controls label {
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: rgb(61, 64, 61);
+                        margin-right: 5px;
+                }
+
+                .controls select {
+                        padding: 8px 12px;
+                        font-size: 16px;
+                        border: 1px solid #ccc;
+                        border-radius: 5px;
+                        background-color: #fff;
+                        transition: border-color 0.3s, box-shadow 0.3s;
+                }
+
+                .controls select:focus {
+                        border-color: #d1dc00;
+                        box-shadow: 0 0 5px rgb(182, 182, 1);
+                        outline: none;
+                }
+
+                .controls button {
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        background-color: rgb(182, 182, 1);
+                        color: #fff;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: background-color 0.3s, box-shadow 0.3s;
+                }
+
+                .controls button:hover {
+                        background-color: rgb(182, 182, 1);
+                        box-shadow: 0 4px 8px rgb(182, 182, 1);
+                }
+
+                @media (max-width: 480px) {
+                        .controls {
+                                flex-direction: column;
+                                text-align: center;
+                        }
+
+                        .controls label,
+                        .controls select,
+                        .controls button {
+                                width: 100%;
+                                margin: 5px 0;
+                        }
+                }
+        </style>
+</head>
+
+<body>
+        <div class="tabs">
+                <a href="Index.html" target="_blank"><button class="tablinks">Home</button></a>
+                <a href="Agriculture.html" target="_blank"><button class="tablinks" onclick="">Agriculture</button></a>
+                <a href="Lakes.html" target="_blank"><button class="tablinks" onclick="">Lakes</button></a>
+                <a href="Urban.html" target="_blank"><button class="tablinks" onclick="">Urban</button></a>
+                <a href="https://survey123.arcgis.com/share/4454d122d6e3418d875ef664bb28d090" target="_blank"><button
+                                class="tablinks" onclick="">Send Feedback</button></a>
+                <a href="About Us.html" target="_blank"><button class="tablinks" onclick="">About Us</button></a>
+        </div>
+        <h1>Urban Changes</h1>
+        <h2>Urban Transformation in Egypt (2000-2020)</h2>
+        <p>Between 2000 and 2020, Egypt witnessed a significant urban transformation driven by rapid population growth,
+                economic expansion, and large-scale development initiatives. The increasing demand for housing,
+                infrastructure, and public services led to extensive urban expansion, reshaping both existing cities and
+                newly developed areas.
+                One of the most notable aspects of this transformation was the large-scale investment in modern
+                infrastructure. Expansions in road networks, bridges, and public transportation systems improved
+                connectivity and facilitated economic activities. New residential and commercial districts emerged,
+                incorporating contemporary architectural designs and smart city technologies to enhance quality of life.
+                The industrial and economic sectors also played a crucial role in urban development. The establishment
+                of new industrial zones and business hubs contributed to job creation and economic diversification.
+                Meanwhile, commercial centers and modern facilities were introduced to accommodate the rising demand for
+                business, retail, and entertainment spaces.
+                Despite these advancements, rapid urbanization also presented challenges, including the expansion of
+                informal settlements, environmental concerns, and the loss of green spaces. In response, urban planning
+                strategies were implemented to regulate construction, improve living conditions, and promote sustainable
+                development.
+                Looking ahead, Egypt continues to focus on sustainable urban growth, integrating smart technologies,
+                eco-friendly infrastructure, and efficient urban planning to support future generations. The period from
+                2000 to 2020 marked a turning point in the country’s urban evolution, laying the foundation for a more
+                modern and well-connected urban landscape.</p>
+        <div class="controls">
+                <label for="governorateSelect">Lake:</label>
+                <select id="governorateSelect">
+                        <option value="Port Said">Port Said</option>
+                        <option value="Ismailia">Ismailia</option>
+                        <option value="Sharqia">Sharqia</option>
+                        <option value="Dakahlia">Dakahlia</option>
+                        <option value="Kafr Al Sheikh">Kafr Al Sheikh</option>
+                        <option value="Damietta">Damietta</option>
+                        <option value="Gharbia">Gharbia</option>
+                        <option value="Behira">Behira</option>
+                        <option value="Menofia">Menofia</option>
+                        <option value="Qalubia">Qalubia</option>
+                        <option value="Alexandria">Alexandria</option>
+                </select>
+                <label for="yearSelectLeft">First Year</label>
+                <select id="yearSelectLeft">
+                        <option value="2000">2000</option>
+                        <option value="2010">2010</option>
+                        <option value="2020">2020</option>
+                </select>
+                <label for="yearSelectRight">Second Year</label>
+                <select id="yearSelectRight">
+                        <option value="2000">2000</option>
+                        <option value="2010">2010</option>
+                        <option value="2020">2020</option>
+                </select>
+                <button id="compareButton">Compare</button>
+                <button id="stopButton">Stop</button>
+        </div>
+        <div id="map4"></div>
+        <h3>Al Dakahlia Governorate</h3>
+        <p>Between 2000 and 2020, Dakahlia Governorate, particularly its capital Mansoura, underwent significant urban
+                changes. These transformations were influenced by rapid population growth, increasing housing demands,
+                and economic development.
+        <ol>
+                <li>Expansion of Mansoura and Surrounding Areas
+                        Mansoura, the largest city in Dakahlia, witnessed substantial urban sprawl. The city expanded
+                        beyond its traditional boundaries, absorbing surrounding villages such as Talkha and Sherbin.
+                        New residential areas emerged, and high-rise buildings began to dominate the cityscape. Many
+                        older neighborhoods were modernized, replacing traditional single-story houses with multi-story
+                        apartment complexes.</li>
+                <li>Expansion of Mansoura and Surrounding Areas
+                        Mansoura, the largest city in Dakahlia, witnessed substantial urban sprawl. The city expanded
+                        beyond its traditional boundaries, absorbing surrounding villages such as Talkha and Sherbin.
+                        New residential areas emerged, and high-rise buildings began to dominate the cityscape. Many
+                        older neighborhoods were modernized, replacing traditional single-story houses with multi-story
+                        apartment complexes.</li>
+                <li>Architectural Shifts
+                        The architectural style of Mansoura evolved significantly, with traditional homes being replaced
+                        by contemporary buildings. Western architectural influences became evident in newly developed
+                        commercial and residential complexes. While this modernization improved the city's skyline, it
+                        also raised concerns about the loss of cultural identity in older neighborhoods.</li>
+                <li>Urban Planning and Zoning Laws
+                        To control the haphazard growth of urban areas, authorities implemented new urban planning
+                        regulations. These measures included restrictions on unregulated construction and efforts to
+                        preserve historical sites. However, informal housing continued to spread in certain areas,
+                        leading to overcrowding and inadequate infrastructure.</li>
+                <li>Impact on Agricultural Lands
+                        One of the most pressing concerns was the encroachment on fertile agricultural land. As the city
+                        expanded, many fields were converted into urban developments. This trend threatened local
+                        agricultural production and raised environmental sustainability issues.</li>
+                <li>Future Development Plans
+                        To balance urban growth with sustainability, authorities in Dakahlia have been working on smart
+                        city initiatives and green urban planning. Investments are being made to improve public
+                        transportation and integrate environmental sustainability measures into future urban expansion
+                        projects.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Dakahlia saw significant urban transformation, particularly in Mansoura. While these
+        changes improved the region's economic and housing sectors, they also presented challenges related to
+        infrastructure, informal housing, and land use. Sustainable urban planning will be essential for ensuring
+        balanced development in the future.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Dakahlia</td>
+                        <td>340.423</td>
+                        <td>476.084</td>
+                        <td>855.443</td>
+                </tr>
+        </table>
+        <h3>Al Sharqia Governorate</h3>
+        <p>
+                Sharqia Governorate, with its capital Zagazig, experienced rapid urban expansion from 2000 to 2020. This
+                transformation was driven by a growing population, increased economic activities, and a demand for
+                modern housing and infrastructure.
+        <ol>
+                <li>Urban Growth in Zagazig and Neighboring Towns
+                        Zagazig saw an expansion in both residential and commercial areas. The city's borders extended
+                        into surrounding rural areas, leading to the urbanization of villages such as Abu Hammad and Al
+                        Ibrahimeyah. Many agricultural lands were converted into residential blocks to accommodate the
+                        increasing population.</li>
+                <li>Infrastructure and Transportation Development
+                        New road networks and bridges were developed to ease traffic congestion and improve connectivity
+                        between Zagazig and other cities in the delta. However, the rapid population increase led to
+                        pressure on public transportation, requiring further investments in bus and rail systems.</li>
+                <li>Changes in Architectural Landscape
+                        The city’s architecture evolved, with new residential buildings adopting modern styles.
+                        Commercial centers and shopping malls emerged, altering the traditional appearance of the city.
+                        However, this development also led to concerns about overcrowding and unplanned urban growth.
+                </li>
+                <li>Encroachment on Agricultural Land
+                        Like other delta governorates, Sharqia faced challenges related to the loss of agricultural land
+                        due to urban expansion. The rapid growth of housing projects contributed to the reduction of
+                        fertile farmland, raising concerns about food production and environmental sustainability.</li>
+                <li>Government Regulations and Planning
+                        The government introduced stricter zoning laws to control unregulated construction and manage
+                        urban expansion. However, informal settlements continued to develop on the outskirts of the
+                        city, requiring further intervention and better planning strategies.</li>
+                <li>Future Urban Development Initiatives
+                        Plans for sustainable urbanization are being implemented, including projects to improve
+                        infrastructure, expand public transport, and introduce green spaces in urban centers. Efforts
+                        are also being made to regulate construction and protect agricultural land.</li>
+        </ol>
+        Conclusion
+        Sharqia Governorate underwent significant urban transformation between 2000 and 2020, with substantial growth in
+        Zagazig and other towns. While this development improved housing and economic opportunities, it also brought
+        challenges related to land use and infrastructure sustainability. Future planning will play a crucial role in
+        addressing these issues.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Sharqia</td>
+                        <td>694.281</td>
+                        <td>871.922</td>
+                        <td>889.949</td>
+                </tr>
+        </table>
+        <h3>Al Beheira Governorate</h3>
+        <p>Beheira Governorate, home to cities like Damanhur and Kafr El Dawar, experienced remarkable urban expansion
+                over the two decades from 2000 to 2020. Economic growth, industrial development, and population
+                increases contributed to these changes.
+        <ol>
+                <li>Expansion of Damanhur and Kafr El Dawar
+                        Damanhur, the capital, saw rapid expansion, with new residential and commercial developments
+                        spreading into surrounding agricultural areas. Kafr El Dawar, known for its industrial sector,
+                        also experienced significant urbanization, with new housing projects built to accommodate
+                        factory workers.</li>
+                <li>Infrastructure Improvements
+                        To support the growing population, road networks were expanded, and public services were
+                        upgraded. However, informal settlements grew in certain areas, creating challenges for city
+                        planning and resource management.</li>
+                <li>Architectural Transformation
+                        Beheira’s cities adopted more modern architectural designs, with multi-story apartment buildings
+                        replacing older homes. Industrial zones expanded, attracting investments but also leading to
+                        increased pollution and environmental concerns.</li>
+                <li>Loss of Agricultural Land
+                        Urban expansion led to a considerable reduction in agricultural land. Many villages saw a shift
+                        from traditional farming to urban-style housing, affecting local agricultural production.</li>
+                <li>Future Development Strategies
+                        Authorities in Beheira are working on sustainable urban planning to mitigate the effects of
+                        rapid expansion. Efforts include improving waste management, expanding green spaces, and
+                        investing in public infrastructure.</li>
+        </ol>
+        Conclusion
+        Beheira Governorate experienced major urban growth between 2000 and 2020, with significant changes in land use,
+        architecture, and infrastructure. While these developments brought modernization and economic benefits, they
+        also posed challenges in terms of sustainability and land management.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Behira</td>
+                        <td>256.042</td>
+                        <td>268.450</td>
+                        <td>357.715</td>
+                </tr>
+        </table>
+        <h3>Al Qalyubia Governorate</h3>
+        <p>Between 2000 and 2020, Qalyubia Governorate experienced significant urban expansion due to its strategic
+                location near Cairo. The governorate, which includes major cities like Banha, Shubra El Kheima, and
+                Qalyub, saw rapid infrastructure development, population growth, and land-use changes.
+        <ol>
+                <li>Expansion of Urban Areas
+                        The proximity of Qalyubia to Cairo accelerated its urbanization, especially in cities like
+                        Shubra El Kheima, which became increasingly integrated into Greater Cairo’s metropolitan area.
+                        Banha, the governorate’s capital, also expanded outward, with new residential and commercial
+                        zones emerging. Many rural areas, such as Qalyub and Khanka, saw significant transformation as
+                        urban developments replaced traditional agricultural lands.</li>
+                <li>Infrastructure and Transportation Development
+                        To accommodate the growing population, the government invested in new roads and transportation
+                        networks. The Cairo-Banha highway was expanded, improving connectivity between Qalyubia and the
+                        capital. The railway system, a key mode of transport for residents, also underwent upgrades to
+                        facilitate better commuting options. However, traffic congestion remained a challenge,
+                        especially in Shubra El Kheima, due to its dense population.</li>
+                <li>Architectural and Industrial Growth
+                        Modern residential buildings, shopping centers, and commercial districts began to replace older
+                        structures. The governorate also saw an expansion in industrial zones, particularly in Obour
+                        City and Shubra El Kheima, where factories and manufacturing facilities grew significantly. This
+                        industrialization brought economic benefits but also led to environmental concerns, including
+                        increased pollution levels.</li>
+                <li>Challenges of Urbanization
+                        One of the biggest challenges in Qalyubia was the encroachment on agricultural land. With urban
+                        sprawl spreading into the fertile lands of the Nile Delta, the region faced a decline in
+                        farmland, affecting local agriculture. Additionally, the rise of informal settlements led to
+                        issues with infrastructure and basic services such as water supply, sanitation, and waste
+                        management.</li>
+                <li>Government Regulations and Future Planning
+                        To control unplanned urban expansion, the government introduced new zoning laws and urban
+                        planning initiatives. Efforts were made to regulate building construction, upgrade informal
+                        settlements, and introduce sustainable urban planning solutions. The governorate also focused on
+                        expanding green spaces and improving environmental policies to counteract industrial pollution.
+                </li>
+                <li>Future Development Prospects
+                        Looking ahead, Qalyubia is expected to continue its urban transformation with a focus on
+                        sustainability. Smart city initiatives, infrastructure modernization, and stricter land-use
+                        policies are being considered to balance urban growth with environmental conservation. The
+                        integration of Qalyubia into national development plans will further enhance its role as a key
+                        urban and industrial hub in Egypt.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Qalyubia underwent rapid urbanization, driven by its proximity to Cairo and its growing
+        industrial sector. While these changes brought economic opportunities and modern infrastructure, they also posed
+        challenges related to land use, pollution, and informal housing. Future urban planning efforts will be essential
+        in ensuring balanced and sustainable development in the governorate.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Qalubia</td>
+                        <td>222.837</td>
+                        <td>336.774</td>
+                        <td>380.577</td>
+                </tr>
+        </table>
+        <h3>Alexandria Governorate</h3>
+        <p>Between 2000 and 2020, Alexandria, Egypt’s second-largest city and primary Mediterranean port, experienced
+                significant urban transformation. The city’s expansion was driven by population growth, economic
+                development, and increased investment in infrastructure and tourism. However, this rapid urbanization
+                also posed challenges, including environmental concerns and unregulated construction.
+        <ol>
+                <li>Expansion of Urban Areas
+                        Alexandria saw a considerable increase in its built-up area, with urban expansion stretching
+                        towards the east (New Borg El Arab) and west (Agami and North Coast areas). The city’s
+                        traditional neighborhoods, such as Smouha and Sidi Gaber, underwent modernization, with older
+                        low-rise buildings being replaced by high-rise residential and commercial towers. Informal
+                        settlements also grew, particularly in areas like Ezbet El Hagana and El Max, leading to
+                        concerns about infrastructure strain.</li>
+                <li>Infrastructure and Transportation Development
+                        To support the growing population and economic activity, major infrastructure projects were
+                        undertaken. The expansion of the Alexandria-Cairo Desert Road improved connectivity with the
+                        capital, while the Corniche Road underwent upgrades to ease traffic congestion. Plans for a
+                        metro system were proposed to address Alexandria’s increasing transportation demands.
+                        Additionally, the Port of Alexandria was modernized to accommodate larger cargo shipments,
+                        reinforcing its role as a key trade hub.</li>
+                <li>Changes in Architectural and Commercial Sectors
+                        The city experienced a shift in architectural styles, with modern high-rise buildings and luxury
+                        hotels replacing older structures in many districts. Commercial centers, such as City Centre
+                        Alexandria and San Stefano Grand Plaza, became prominent landmarks, attracting investment and
+                        boosting tourism. However, the construction boom also led to unregulated building practices,
+                        with some historic structures being demolished to make way for new developments.</li>
+                <li>Coastal and Environmental Challenges
+                        One of the most pressing issues in Alexandria’s urban transformation was the impact of rising
+                        sea levels and coastal erosion. Several parts of the city, particularly the Corniche and Montaza
+                        areas, faced flooding risks due to climate change. In response, government initiatives were
+                        launched to build sea barriers and enhance coastal protection. Pollution from industrial zones
+                        and increasing waste production also became a growing concern, prompting efforts to improve
+                        waste management and environmental regulations.</li>
+                <li>Government Regulations and Urban Planning Initiatives
+                        In an attempt to control haphazard construction, authorities implemented stricter zoning laws
+                        and urban planning guidelines. Efforts were made to revitalize historic sites, such as the
+                        Bibliotheca Alexandrina area and the Citadel of Qaitbay, ensuring that Alexandria preserved its
+                        cultural heritage amidst rapid modernization. The government also invested in developing smart
+                        city projects in New Borg El Arab to accommodate future population growth in a more planned
+                        manner.</li>
+                <li>Future Development Plans
+                        Looking ahead, Alexandria’s urban transformation is set to continue with a focus on sustainable
+                        growth. Plans for expanding public transportation, developing new residential zones outside the
+                        crowded city center, and implementing green infrastructure projects are being considered. The
+                        city’s role as a major economic and tourism hub will be reinforced through improved coastal
+                        management and investment in smart urban solutions.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Alexandria witnessed extensive urbanization, marked by rapid expansion, infrastructure
+        development, and architectural modernization. While these changes improved the city’s economy and connectivity,
+        they also presented challenges such as environmental risks, traffic congestion, and unregulated construction.
+        Future planning efforts will be essential in ensuring a balanced and sustainable urban future for the
+        Mediterranean capital of Egypt.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Alexandria</td>
+                        <td>806.652</td>
+                        <td>835.616</td>
+                        <td>879.239</td>
+                </tr>
+        </table>
+        <h3>Ismailia Governorate</h3>
+        <p>Between 2000 and 2020, Ismailia Governorate, known as the "City of Beauty and Enchantment," underwent
+                significant urban transformation due to its strategic location along the Suez Canal. The city's
+                expansion was driven by population growth, increased investment in infrastructure, and the development
+                of new residential and industrial areas. While modernization improved connectivity and economic
+                opportunities, challenges such as unregulated urban sprawl and environmental concerns also emerged.
+        <ol>
+                <li>Expansion of Urban Areas
+                        Ismailia witnessed substantial urban growth, particularly in its western and southern regions.
+                        The city expanded towards areas like Future City and New Ismailia City, which were developed to
+                        accommodate the increasing population and reduce pressure on the city center. Additionally,
+                        rural areas surrounding the city saw a transformation as agricultural land was converted into
+                        residential and commercial developments.</li>
+                <li>Infrastructure and Transportation Development
+                        To support the growing population and economic activity, major infrastructure projects were
+                        launched. The construction of the New Ismailia Tunnels under the Suez Canal improved
+                        connectivity with the Sinai Peninsula, boosting trade and logistics. Road networks were
+                        expanded, and public transportation services were upgraded to facilitate movement within the
+                        governorate and to neighboring cities like Cairo and Port Said.</li>
+                <li>Changes in Architectural and Commercial Sectors
+                        Ismailia saw a rise in modern architectural styles, with new residential complexes and
+                        commercial centers emerging. The city's skyline evolved with the construction of high-rise
+                        buildings and shopping malls, such as Ismailia City Centre. The expansion of industrial zones
+                        also contributed to economic growth, attracting investment in manufacturing and logistics.
+                        However, some historic buildings and colonial-era structures faced threats due to urban
+                        expansion.</li>
+                <li>Impact on Agricultural Land and Green Spaces
+                        One of the major concerns of urban expansion in Ismailia was the loss of agricultural land. The
+                        city, traditionally known for its lush greenery and palm groves, saw some of its fertile lands
+                        transformed into urban developments. However, efforts were made to preserve green spaces, with
+                        parks and recreational areas being integrated into new urban planning initiatives.</li>
+                <li>Government Regulations and Urban Planning Initiatives
+                        To manage urban growth effectively, the government introduced new zoning laws and development
+                        plans. New Ismailia City was designed as a smart urban area with modern infrastructure and
+                        sustainable housing projects. The authorities also implemented measures to control informal
+                        settlements and improve utilities such as water supply, sewage systems, and electricity
+                        distribution.</li>
+                <li>Future Development Plans
+                        Looking forward, Ismailia’s urban transformation is set to continue with a focus on
+                        sustainability and smart city development. Plans include expanding industrial zones, enhancing
+                        tourism infrastructure along Lake Timsah, and improving public transport networks. Additionally,
+                        environmental initiatives aim to protect the city's natural resources while ensuring balanced
+                        urban expansion.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Ismailia experienced rapid urban development, driven by infrastructure expansion,
+        economic growth, and increased residential demand. While these changes brought modernization and new
+        opportunities, they also posed challenges related to land use and environmental sustainability. Future planning
+        efforts will be essential in maintaining Ismailia’s balance between urbanization and its historical and
+        ecological significance.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Ismailia</td>
+                        <td>1101.563</td>
+                        <td>1469.604</td>
+                        <td>1697.820</td>
+                </tr>
+        </table>
+        <h3>Damietta Governorate</h3>
+        <p>Between 2000 and 2020, Damietta Governorate, known for its thriving furniture industry and strategic
+                Mediterranean coastline, underwent significant urban transformation. The governorate experienced rapid
+                expansion in residential, industrial, and commercial sectors, driven by economic growth, population
+                increase, and infrastructure development. However, this urbanization also posed challenges such as
+                land-use changes, environmental concerns, and increased pressure on public services.
+        <ol>
+                <li>Expansion of Urban Areas
+                        Damietta saw substantial urban expansion, particularly in its capital city, Damietta, and
+                        surrounding areas like New Damietta City. The latter was developed as a planned urban extension
+                        to accommodate population growth and attract investment. Meanwhile, smaller towns such as Ras El
+                        Bar, Kafr Saad, and Faraskur witnessed noticeable growth, with new housing projects and
+                        commercial areas emerging. Rural areas also experienced a shift, as agricultural lands were
+                        partially converted into residential and industrial zones.</li>
+                <li>Infrastructure and Transportation Development
+                        To support the governorate’s urban expansion, major infrastructure projects were launched. New
+                        Damietta City was equipped with modern road networks, improved sewage and water systems, and
+                        advanced urban planning. The expansion of the Damietta Port boosted the governorate’s economic
+                        role, making it one of Egypt’s most important trade hubs. Additionally, new roads and bridges
+                        were constructed to enhance connectivity between Damietta, Cairo, and other Delta cities.</li>
+                <li>Changes in Architectural and Industrial Sectors
+                        Damietta’s transformation was marked by a rise in modern residential buildings, commercial
+                        complexes, and industrial zones. The furniture industry, a key economic driver, saw the
+                        establishment of the Damietta Furniture City project, which provided a centralized and
+                        modernized hub for furniture manufacturing and export. Meanwhile, Ras El Bar, a popular coastal
+                        destination, experienced the development of high-rise buildings and tourism facilities,
+                        reshaping its skyline.</li>
+                <li>Environmental and Coastal Challenges
+                        Due to its coastal location, Damietta faced challenges related to coastal erosion, rising sea
+                        levels, and pollution from industrial activities. Urban expansion in Ras El Bar and New Damietta
+                        led to concerns about the loss of natural habitats and increased pressure on marine ecosystems.
+                        Efforts were made to implement coastal protection projects, such as constructing sea barriers
+                        and enhancing environmental regulations to reduce industrial waste.</li>
+                <li>Government Regulations and Urban Planning Initiatives
+                        To manage the rapid urbanization, the government introduced stricter zoning laws and urban
+                        development strategies. New Damietta City was designed as a smart urban area with modern
+                        facilities, while regulations were enforced to prevent illegal construction on agricultural
+                        land. Additionally, initiatives were launched to improve public services, including healthcare,
+                        education, and transportation, to accommodate the growing population.</li>
+                <li>Future Development Plans
+                        Looking forward, Damietta’s urban growth is expected to continue with a focus on sustainability
+                        and industrial expansion. Plans include further development of New Damietta, expansion of
+                        industrial zones, and upgrading transportation networks to strengthen the governorate’s role in
+                        trade and manufacturing. Additionally, investments in environmental protection and tourism
+                        infrastructure aim to balance economic growth with ecological sustainability.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Damietta experienced rapid urban and economic transformation, driven by infrastructure
+        development, industrial expansion, and modernized urban planning. While these changes enhanced the governorate’s
+        economic significance, they also introduced challenges such as environmental risks and urban sprawl. Future
+        planning efforts will be crucial in ensuring sustainable urbanization while preserving Damietta’s unique
+        economic and coastal identity.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Damietta</td>
+                        <td>122.891</td>
+                        <td>167.302</td>
+                        <td>261.077</td>
+                </tr>
+        </table>
+        <h3>Kafr Al Sheikh Governorate</h3>
+        <p>Between 2000 and 2020, Kafr Al Sheikh Governorate, particularly its capital Kafr El-Sheikh, underwent
+                significant urban changes. These transformations were driven by rapid population growth, increasing
+                housing demands, and broader economic development.
+        <ol>
+                <li>Expansion of Kafr El-Sheikh and Surrounding Areas
+                        Kafr El-Sheikh, the largest city in Kafr Al Sheikh Governorate, witnessed substantial urban
+                        sprawl. The city expanded beyond its traditional boundaries, absorbing surrounding villages and
+                        localities. New residential areas emerged, and high-rise buildings began to dominate the
+                        cityscape. Many older neighborhoods were modernized, with traditional single-story houses giving
+                        way to multi-story apartment complexes.</li>
+                <li>vArchitectural Shifts
+                        The architectural style of Kafr El-Sheikh evolved significantly, as traditional homes were
+                        replaced by contemporary structures. Western influences became evident in many of the new
+                        commercial and residential complexes. Although the modernization enhanced the city's skyline, it
+                        also sparked concerns about the loss of cultural identity in older districts.</li>
+                <li>Urban Planning and Zoning Laws
+                        In an effort to control unregulated growth, local authorities implemented new urban planning
+                        regulations. These measures included restrictions on informal construction and initiatives aimed
+                        at preserving historical sites. Nevertheless, informal housing continued to emerge in certain
+                        areas, contributing to overcrowding and challenges with infrastructure.</li>
+                <li>Impact on Agricultural Lands
+                        One of the most pressing issues was the encroachment on fertile agricultural land. As Kafr
+                        El-Sheikh expanded, many once-productive fields were converted into urban developments. This
+                        shift raised concerns over local agricultural output and highlighted broader questions about
+                        environmental sustainability in the face of rapid urbanization.</li>
+                <li>Future Development Plans
+                        Looking ahead, authorities in Kafr Al Sheikh are pursuing smart city initiatives and green urban
+                        planning projects to balance growth with sustainability. Investments in public transportation
+                        and environmentally conscious development strategies are at the forefront of efforts to ensure
+                        that future expansion meets both economic and ecological goals.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Kafr Al Sheikh Governorate experienced a marked transformation, especially in its
+        capital, Kafr El-Sheikh. While these changes stimulated economic and housing advancements, they also introduced
+        challenges related to infrastructure, informal settlements, and land use. A commitment to sustainable urban
+        planning will be crucial to achieving balanced development in the years to come.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Kafr Al Sheikh</td>
+                        <td>473.866</td>
+                        <td>584.521</td>
+                        <td>728.914</td>
+                </tr>
+        </table>
+        <h3>Al Gharbia Governorate</h3>
+        <p>Between 2000 and 2020, Al Gharbia Governorate, particularly its capital Tanta, underwent significant urban
+                changes. These transformations were influenced by rapid population growth, increasing housing demands,
+                and economic development.
+        <ol>
+                <li>Expansion of Tanta and Surrounding Areas
+                        Tanta, the largest city in Al Gharbia Governorate, experienced substantial urban sprawl. The
+                        city expanded beyond its traditional boundaries, incorporating surrounding villages and
+                        localities. New residential districts emerged, and high-rise buildings began to define the
+                        cityscape. Many older neighborhoods were modernized, replacing traditional single-story houses
+                        with multi-story apartment complexes.</li>
+                <li>Architectural Shifts
+                        Tanta's architectural landscape evolved markedly as traditional homes were supplanted by
+                        contemporary structures. Western influences became increasingly prominent in the new commercial
+                        and residential complexes. Although these developments enhanced the city's skyline, they also
+                        raised concerns about the erosion of local cultural identity in historic areas.</li>
+                <li>Urban Planning and Zoning Laws
+                        In response to unregulated growth, local authorities enacted new urban planning regulations.
+                        These measures aimed to restrict haphazard construction and preserve significant historical
+                        sites. Despite these efforts, informal housing continued to emerge in certain areas, resulting
+                        in overcrowding and infrastructure challenges.</li>
+                <li>Impact on Agricultural Lands
+                        One of the most pressing issues during this urban expansion was the encroachment on fertile
+                        agricultural land. As Tanta grew, many productive fields were converted into urban developments.
+                        This shift not only threatened local agricultural output but also raised environmental
+                        sustainability concerns.</li>
+                <li>Future Development Plans
+                        To balance urban growth with environmental preservation, officials in Al Gharbia are embracing
+                        smart city initiatives and green urban planning strategies. Investments in improved public
+                        transportation and eco-friendly infrastructure aim to create a future where urban expansion
+                        coexists harmoniously with sustainable practices.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Al Gharbia Governorate experienced a transformative urban journey, especially in its
+        capital, Tanta. While economic and housing advancements were significant, these changes have also introduced
+        challenges in terms of infrastructure, informal settlements, and the loss of agricultural lands. Going forward,
+        a deliberate focus on sustainable urban planning will be crucial for fostering balanced development.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Gharbia</td>
+                        <td>155.500</td>
+                        <td>258.798</td>
+                        <td>273.483</td>
+                </tr>
+        </table>
+        <h3>Al Menofia Governorate</h3>
+        <p>Between 2000 and 2020, Al Menofia Governorate, particularly its capital Shibin El-Kom, underwent significant
+                urban changes. These transformations were driven by rapid population growth, surging housing demands,
+                and evolving economic dynamics.
+        <ol>
+                <li>Expansion of Shibin El-Kom and Surrounding Areas
+                        Shibin El-Kom, the largest city in Al Menofia Governorate, experienced robust urban sprawl. The
+                        city expanded beyond its historical boundaries, incorporating surrounding villages and
+                        localities. New residential districts emerged, and high-rise buildings gradually redefined the
+                        urban landscape. Many older neighborhoods transformed from traditional single-story dwellings
+                        into multi-story apartment complexes, mirroring the region's swift modernization.</li>
+                <li>Architectural Shifts
+                        The architectural character of Shibin El-Kom evolved markedly during this period. Traditional
+                        homes were increasingly supplanted by contemporary structures blending local heritage with
+                        modern, Western design influences. Although these changes enhanced the city’s skyline and
+                        functionality, they also sparked concerns about the erosion of the cultural identity inherent in
+                        longstanding neighborhoods.</li>
+                <li>Urban Planning and Zoning Laws
+                        To manage the fast-paced development and mitigate unregulated construction, local authorities
+                        introduced comprehensive urban planning regulations. These measures aimed to control informal
+                        housing developments and safeguard historical sites. Despite such efforts, uncontrolled
+                        construction persisted in certain sectors, resulting in occasional overcrowding and strain on
+                        infrastructure.</li>
+                <li>Impact on Agricultural Lands
+                        A pressing challenge during this transformation was the diminishing area of fertile agricultural
+                        lands. As urban expansion continued, once-productive farmlands were converted into urban
+                        developments. This shift not only threatened regional agricultural output and food security but
+                        also raised broader environmental sustainability concerns.</li>
+                <li>Future Development Plans
+                        Looking ahead, Al Menofia Governorate is embracing smart city initiatives and sustainable urban
+                        planning strategies. Investments in improved public transportation, eco-friendly infrastructure,
+                        and innovative construction practices aim to balance economic progress with environmental
+                        responsibility. This forward-thinking approach is expected to pave the way for a resilient and
+                        balanced urban ecosystem.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Al Menofia Governorate witnessed a remarkable evolution, particularly in its central hub,
+        Shibin El-Kom. While the region benefited from significant economic growth and an upgraded urban landscape,
+        these advances also brought challenges such as infrastructure stress, informal settlements, and the loss of
+        valuable agricultural lands. Moving forward, a dedicated focus on sustainable and well-regulated urban planning
+        will be crucial in ensuring balanced development.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Menofia</td>
+                        <td>315.429</td>
+                        <td>461.685</td>
+                        <td>610.952</td>
+                </tr>
+        </table>
+        <h3>Port Said Governorate</h3>
+        <p>Between 2000 and 2020, Port Said underwent significant urban changes. These transformations were driven by
+                rapid population growth, increasing housing demands, and evolving economic dynamics tied closely to its
+                role as a key maritime hub.
+        <ol>
+                <li>Expansion of Port Said and Surrounding Areas
+                        Port Said experienced notable urban sprawl during this period. The city expanded beyond its
+                        traditional boundaries, absorbing adjacent districts and neighborhoods. New residential zones
+                        emerged alongside modern commercial developments, while high-rise buildings began to redefine
+                        parts of the cityscape. Traditional low-rise structures gradually gave way to multi-story
+                        complexes, reflecting the need to accommodate a growing population and modern urban lifestyles.
+                </li>
+                <li>Architectural Shifts
+                        The architectural evolution of Port Said blended its rich historical heritage with contemporary
+                        design. Many traditional buildings—with distinctive maritime and cultural significance—were
+                        renovated or replaced by new structures that incorporated modern, Western-style influences.
+                        Although these changes enhanced the city’s functionality and skyline, there has been ongoing
+                        concern over the gradual erosion of Port Said’s unique historical identity.</li>
+                <li>Urban Planning and Zoning Laws
+                        In response to rapid development, local authorities introduced updated urban planning
+                        regulations to guide expansion and prevent unregulated construction. These measures included
+                        stricter zoning laws designed to preserve historically significant districts and improve overall
+                        infrastructure. However, in some areas, informal construction continued to emerge, contributing
+                        to challenges like overcrowding and increased pressure on public services.</li>
+                <li>Impact on Waterfront Areas and Port Infrastructure
+                        One of the most pressing challenges during Port Said’s transformation was balancing
+                        modernization with the preservation of its waterfront and port infrastructure. As the city
+                        expanded, parts of its traditional harbor area underwent redevelopment to support intensified
+                        economic activities. This modernization sometimes came into conflict with efforts to protect
+                        historical sites and maintain the environmental integrity of the coastal ecosystem. The tension
+                        between economic progress and heritage preservation remains a critical issue for the city.</li>
+                <li>Future Development Plans
+                        Looking forward, Port Said’s urban planners are emphasizing smart city initiatives and
+                        sustainable development practices. Future projects aim to enhance public transportation,
+                        optimize port operations, and safeguard the city’s historical coastal zones. By integrating
+                        eco-friendly infrastructure and advanced planning strategies, Port Said hopes to strike a
+                        balance between growth and the preservation of its unique maritime heritage.</li>
+        </ol>
+        Conclusion
+        Between 2000 and 2020, Port Said experienced a comprehensive transformation driven by demographic shifts and
+        economic imperatives. While modernization has brought significant development and improved amenities, it has
+        also generated challenges—particularly in preserving the city’s historic waterfront, managing informal
+        settlements, and ensuring sustainable urban growth. Going forward, a deliberate focus on regulated and
+        eco-conscious planning will be key to retaining the qualities that make Port Said both historically rich and
+        dynamically modern.
+        </p>
+        <table border="1" align="center" width="80%" style="text-align: center; vertical-align: middle;"
+                cellpadding="5">
+                <tr>
+                        <th>Governorates</th>
+                        <th>NDBI 2000 (Sqkm)</th>
+                        <th>NDBI 2010 (Sqkm)</th>
+                        <th>NDBI 2020 (Sqkm)</th>
+                </tr>
+                <tr>
+                        <td>Port Said</td>
+                        <td>465.519</td>
+                        <td>510.269</td>
+                        <td>542.710</td>
+                </tr>
+        </table>
+        <script src="https://js.arcgis.com/4.26/"></script>
+        <script src="Urban_Script.js"></script>
+</body>
+
+</html>
